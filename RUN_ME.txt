@@ -1,0 +1,35 @@
+AirSketch — how to launch
+==========================
+
+EASIEST (one click, no Python needed)
+-------------------------------------
+1. Open the folder:  dist\AirSketch\
+2. Double-click:     AirSketch.exe
+   -> A launcher window opens. Pick your options (mode, language, voice, etc.)
+      and click "Launch ▶".
+
+   Keep the whole dist\AirSketch\ folder together (the exe needs its _internal\
+   folder next to it). The app finds the AI models in the models\ folder that
+   ships alongside this project, so don't move the exe out of the project tree.
+
+RUN FROM SOURCE (developers)
+----------------------------
+1. Install Python 3.11+ and, from this folder:
+       python -m pip install -e .
+       python -m pip install sounddevice        (only needed for voice)
+2. Launch the GUI:
+       python launcher.py
+   or run directly:
+       python -m airsketch.main --classroom              (the game)
+       python -m airsketch.main --classroom --lang he     (Hebrew)
+       python -m airsketch.main --classroom --understand --teacher-voice
+   On a normal PC add:  --no-rotate --mirror
+   (On the VDI the camera is upside-down, so omit --no-rotate.)
+
+NOTES
+-----
+- Hand tracking runs on OpenVINO by default (Intel CPU/GPU/NPU).
+- Voice/dictation need a working microphone; on a VDI enable mic redirection
+  in your client and, if needed, raise the "Mic open timeout" in the launcher.
+- On exit the classroom writes a lesson report to  outputs\lesson_<timestamp>.html
+- Full docs: README.md, SETUP_LOCAL.md, LAUNCHER.md, SESSION_HANDOFF.md.

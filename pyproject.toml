@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airsketch"
+version = "0.1.0"
+description = "Air-drawing app with multi-stroke notebook, live snap-to-shape, CNN classifier, and optional Qwen-VL."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "AirSketch contributors" }]
+
+dependencies = [
+    "opencv-python>=4.8.0",
+    "mediapipe>=0.10.0",
+    "numpy>=1.24.0",
+    "openvino>=2024.4.0",
+    "openvino-genai>=2024.4.0",
+    "huggingface_hub>=0.23.0",
+    "transformers>=4.40.0",
+    "sentencepiece>=0.2.0",
+    "tiktoken>=0.7.0",
+]
+
+[project.optional-dependencies]
+voice = ["sounddevice>=0.4.6"]
+train = ["torch>=2.0", "torchvision>=0.15"]
+dev = ["pytest>=7.0", "pytest-cov"]
+# Build the GUI launcher exe: `pip install -e .[exe]` then run build_exe.bat.
+exe = ["pyinstaller>=6.0"]
+
+[project.scripts]
+airsketch = "airsketch.main:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
