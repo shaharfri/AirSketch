@@ -49,6 +49,36 @@ source .venv/bin/activate
 pip install -e .
 ```
 
+### Models (not included in this repository)
+
+The trained models / weights (~4 GB total) are intentionally **not** committed to git.
+After `pip install -e .`, fetch the ones you need:
+
+- **Whisper STT** (voice + dictation): `python -m training.setup_whisper` downloads an
+  OpenVINO Whisper model into `models/whisper-base-ov/`. For better Hebrew/English
+  accuracy, also fetch `whisper-small` (see `docs/model_download.md`); select it with
+  `--whisper-model small`.
+- **Quick-Draw CNN** (object recognition): needs `models/sketch_classifier.xml` (+`.bin`,
+  `class_names.json`). Train it with `python -m training.download_quickdraw` then
+  `python -m training.train_sketch_cnn`, or drop a pre-trained OpenVINO IR into `models/`.
+- **Hand tracking** (default, OpenVINO): `models/hand_landmarker.task` auto-downloads on
+  first run; the OpenVINO backend extracts its two sub-models from it automatically.
+- **Optional features** — board OCR (PP-OCR), board LLM (Qwen2.5-3B), teacher voice
+  (WeSpeaker), notebook VLM (Qwen2-VL): see `docs/model_download.md` for sources.
+
+> Prefer a turnkey package? A fully self-contained build with **all** models bundled and a
+> **one-click Windows launcher** (`AirSketch.exe`) can be produced via `build_exe.bat`
+> (exe) and `build_dist.py` (zip) — see `LAUNCHER.md`.
+
+## Launcher (GUI)
+
+Instead of CLI flags you can run a small feature-flags GUI that builds and launches the
+app for you:
+
+```bash
+python launcher.py
+```
+
 ## Run
 
 ```powershell
