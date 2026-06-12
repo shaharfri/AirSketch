@@ -1,0 +1,42 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Build / packaging artifacts ----
+build/
+dist/
+*.manifest
+
+# ---- Logs & runtime output ----
+*.log
+outputs/
+
+# ---- Large model weights (do NOT commit; ~4 GB). Fetch via docs/model_download.md
+#       and training/setup_whisper.py / download_quickdraw.py ----
+models/*
+!models/class_names.json
+!models/.gitkeep
+
+# ---- Training data (large; regenerate via training/download_quickdraw.py) ----
+data/
+
+# ---- Personal / private (never publish) ----
+models/teacher_voice.json
+
+# ---- Distributable archives ----
+*.zip
+
+# ---- OS / editor cruft ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
