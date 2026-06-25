@@ -28,6 +28,8 @@ _DEFAULT_CNN_DEVICE = "AUTO"
 _DEFAULT_VLM_DEVICE = "AUTO"
 _DEFAULT_OCR_DEVICE = "CPU"
 _DEFAULT_LLM_DEVICE = "CPU"
+_DEFAULT_VOICE_DEVICE = "CPU"
+_DEFAULT_SPEAKER_DEVICE = "CPU"
 
 
 def build_args(opts: dict) -> list[str]:
@@ -105,6 +107,13 @@ def build_args(opts: dict) -> list[str]:
         wm = g("whisper_model", "base")
         if wm and wm != "base":
             args += ["--whisper-model", wm]
+        vcd = g("voice_device", _DEFAULT_VOICE_DEVICE)
+        if vcd and vcd != _DEFAULT_VOICE_DEVICE:
+            args += ["--voice-device", vcd]
+    if g("teacher_voice", False):
+        spd = g("speaker_device", _DEFAULT_SPEAKER_DEVICE)
+        if spd and spd != _DEFAULT_SPEAKER_DEVICE:
+            args += ["--speaker-device", spd]
 
     # Board capture + understanding LLM
     if g("board", False):
@@ -272,6 +281,10 @@ def launch_gui() -> None:
     v_understand = tk.BooleanVar(value=False)
     v_vlm = tk.BooleanVar(value=False)
     v_vlm_device = tk.StringVar(value="AUTO")
+    v_ocr_device = tk.StringVar(value="CPU")
+    v_llm_device = tk.StringVar(value="CPU")
+    v_voice_device = tk.StringVar(value="CPU")
+    v_speaker_device = tk.StringVar(value="CPU")
     v_snap = tk.BooleanVar(value=False)
     v_mic_timeout = tk.IntVar(value=6)
     v_whisper = tk.StringVar(value="base")
@@ -286,7 +299,9 @@ def launch_gui() -> None:
             cnn_device=v_cnn_device.get(), voice=v_voice.get(),
             teacher_voice=v_teacher.get(), board=v_board.get(),
             understand=v_understand.get(), vlm=v_vlm.get(),
-            vlm_device=v_vlm_device.get(), snap=v_snap.get(),
+            vlm_device=v_vlm_device.get(), ocr_device=v_ocr_device.get(),
+            llm_device=v_llm_device.get(), voice_device=v_voice_device.get(),
+            speaker_device=v_speaker_device.get(), snap=v_snap.get(),
             mic_timeout=v_mic_timeout.get(), whisper_model=v_whisper.get(),
         )
 
@@ -343,6 +358,19 @@ def launch_gui() -> None:
     ttk.Label(f_dev, text="CNN device:").grid(row=3, column=0, sticky="w")
     ttk.Combobox(f_dev, textvariable=v_cnn_device, width=11, state="readonly",
                  values=DEVICES).grid(row=3, column=1, sticky="w")
+    # remaining per-model devices (apply when the matching feature/mode is on)
+    for _r, (_lbl, _var) in enumerate([
+        ("Voice device:", v_voice_device),
+        ("Speaker device:", v_speaker_device),
+        ("OCR device:", v_ocr_device),
+        ("LLM device:", v_llm_device),
+        ("VLM device:", v_vlm_device),
+    ], start=4):
+        ttk.Label(f_dev, text=_lbl).grid(row=_r, column=0, sticky="w")
+        ttk.Combobox(f_dev, textvariable=_var, width=11, state="readonly",
+                     values=DEVICES).grid(row=_r, column=1, sticky="w")
+    ttk.Label(f_dev, text="(device applies only if that feature is enabled)",
+              foreground="#777").grid(row=9, column=0, columnspan=2, sticky="w", pady=(4, 0))
 
     # ---- Features ----
     f_feat = ttk.LabelFrame(body, text="Features", padding=8)
@@ -391,7 +419,8 @@ def launch_gui() -> None:
 
     for var in (v_mode, v_theme, v_language, v_camera, v_mirror, v_rotate, v_hand_backend,
                 v_hand_device, v_hand_debug, v_no_cnn, v_cnn_device, v_voice,
-                v_teacher, v_board, v_understand, v_vlm, v_vlm_device, v_snap,
+                v_teacher, v_board, v_understand, v_vlm, v_vlm_device, v_ocr_device,
+                v_llm_device, v_voice_device, v_speaker_device, v_snap,
                 v_mic_timeout, v_whisper):
         var.trace_add("write", refresh)
     refresh()

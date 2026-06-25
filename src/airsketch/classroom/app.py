@@ -895,6 +895,10 @@ def main():
                    help="Add the LLM that summarizes board text (implies --board; ~1.8 GB)")
     p.add_argument("--llm-device", default=None,
                    help="OpenVINO device for the understanding LLM: CPU | GPU | NPU | AUTO")
+    p.add_argument("--voice-device", default=None,
+                   help="OpenVINO device for voice STT (Whisper): CPU | GPU | NPU | AUTO")
+    p.add_argument("--speaker-device", default=None,
+                   help="OpenVINO device for speaker ID (WeSpeaker): CPU | GPU | NPU | AUTO")
     p.add_argument("--teacher-voice", action="store_true",
                    help="Speaker recognition: enroll (E) the teacher's voice, gate dictation (implies --voice)")
     p.add_argument("--speaker-threshold", type=float, default=None,
@@ -935,6 +939,10 @@ def main():
         cfg.board_llm_enabled = True
     if args.llm_device:
         cfg.llm_device = args.llm_device.upper()
+    if args.voice_device:
+        cfg.voice_device = args.voice_device.upper()
+    if args.speaker_device:
+        cfg.speaker_device = args.speaker_device.upper()
     if args.teacher_voice:
         cfg.teacher_voice_enabled = True
     if args.speaker_threshold is not None:

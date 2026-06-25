@@ -18,7 +18,7 @@ The launcher closes and the app starts in a separate process.
 |---|---|
 | **Mode** | Classroom challenge game / Notebook (freehand) · Theme (geometry/objects/mixed) · **Language (en/he)** |
 | **Camera** | Index · Mirror (selfie) · Rotate 180° (on by default for the VDI camera) |
-| **AI backends & devices** | Hand tracking backend (**openvino** default / mediapipe) · Hand device (AUTO/CPU/GPU/NPU) · Hand-tracking debug overlay · CNN device |
+| **AI backends & devices** | Hand tracking backend (**openvino** default / mediapipe) · Hand-tracking debug overlay · **per-model OpenVINO device** (AUTO/CPU/GPU/NPU) for hand, CNN, voice (Whisper), speaker, OCR, LLM, VLM — each applies only when that feature is enabled |
 | **Features** | Voice commands · Teacher voice/dictation · Whiteboard capture (PP-OCR) · Understand board (LLM) · Qwen2-VL titling (notebook) · Snap-to-shape · Disable CNN |
 
 Everything maps 1:1 to `airsketch.main` CLI flags — the preview box shows the exact

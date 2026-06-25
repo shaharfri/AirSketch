@@ -178,6 +178,7 @@ class AppConfig:
     # "base" (default, fast, in models/whisper-base-ov) or "small" (more accurate,
     # esp. Hebrew, ~0.5 GB, in models/whisper-small-ov).
     whisper_model: str = "base"              # base | small
+    voice_device: str = "CPU"                # CPU | GPU | NPU | AUTO (Whisper STT)
 
     # --- Output ---
     output_dir: str = "outputs"

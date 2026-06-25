@@ -123,6 +123,26 @@ class TestFeatures:
         a = build_args({"voice": True, "whisper_model": "small"})
         assert a[a.index("--whisper-model") + 1] == "small"
 
+    def test_voice_device_only_when_voice_and_nondefault(self):
+        assert "--voice-device" not in build_args({"voice": True, "voice_device": "CPU"})
+        assert "--voice-device" not in build_args({"voice_device": "GPU"})  # voice off
+        a = build_args({"voice": True, "voice_device": "GPU"})
+        assert a[a.index("--voice-device") + 1] == "GPU"
+
+    def test_speaker_device_only_when_teacher_and_nondefault(self):
+        assert "--speaker-device" not in build_args({"teacher_voice": True, "speaker_device": "CPU"})
+        assert "--speaker-device" not in build_args({"speaker_device": "GPU"})  # teacher off
+        a = build_args({"teacher_voice": True, "speaker_device": "NPU"})
+        assert a[a.index("--speaker-device") + 1] == "NPU"
+
+    def test_ocr_llm_vlm_devices_from_gui(self):
+        a = build_args({"board": True, "ocr_device": "GPU"})
+        assert a[a.index("--ocr-device") + 1] == "GPU"
+        b = build_args({"understand": True, "llm_device": "GPU"})
+        assert b[b.index("--llm-device") + 1] == "GPU"
+        c = build_args({"mode": "notebook", "vlm": True, "vlm_device": "GPU"})
+        assert c[c.index("--vlm-device") + 1] == "GPU"
+
 
 class TestWindowedStdStreams:
     """A PyInstaller --windowed exe has sys.stdout/stderr == None; the app must
